@@ -40,9 +40,17 @@ jobs:
       - run: |
           az group create -l westus -n ${{ github.event.inputs.appGetRepositoryBranch }}
 
-      - name: Deploy Bicep Template
-        run: |
-          az deployment group create \
-            --resource-group rg-vectorsearch-ai-assistant \
-            --template-file infra/azuredeploy.bicep 
-            --parameters mongoDbUserName=${{ github.event.inputs.mongoDbUserName }} mongoDbPassword=${{ secrets.MONGO_DB_PASSWORD }}
+      # - name: Deploy Bicep Template
+      #   run: |
+      #     az deployment group create \
+      #       --resource-group rg-vectorsearch-ai-assistant \
+      #       --template-file infra/azuredeploy.bicep 
+      #       --parameters mongoDbUserName=${{ github.event.inputs.mongoDbUserName }} mongoDbPassword=${{ secrets.MONGO_DB_PASSWORD }}
+
+        # Deploy Bicep file
+      - name: deploy
+        uses: azure/arm-deploy@v1
+        with:
+            template: ./infra/azuredeploy.bicep
+            parameters: mongoDbUserName=${{ github.event.inputs.mongoDbUserName }} mongoDbPassword=${{ secrets.MONGO_DB_PASSWORD }}
+            failOnStdErr: false

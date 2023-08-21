@@ -46,7 +46,7 @@ jobs:
         run: |
           az deployment group create \
             --resource-group ${{ github.event.inputs.resource-group-name }} \
-            --template-file ./infra/azuredeploy.bicep 
+            --template-file ../infra/azuredeploy.bicep 
             --parameters \
               mongoDbUserName=${{ github.event.inputs.mongoDbUserName }} \
               mongoDbPassword=${{ secrets.MONGO_DB_PASSWORD }}

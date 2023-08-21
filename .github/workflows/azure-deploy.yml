@@ -49,3 +49,6 @@ jobs:
           az deployment group create \
             --resource-group rg-vectorsearch-ai-assistant \
             --template-file infra/azuredeploy.bicep 
+            --parameters \
+              mongoDbUserName=${{ github.event.inputs.mongoDbUserName }} \
+              mongoDbPassword=${{ github.event.inputs.mongoDbPassword }}

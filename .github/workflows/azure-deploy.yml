@@ -1,4 +1,5 @@
 name: Deploy Bicep Template
+# Deploy Vector Search & AI Assistant for Azure Cosmos DB for MongoDB vCore
 on:
   
   workflow_dispatch:
@@ -20,21 +21,33 @@ on:
         description: 'Azure App Service Sku'
         required: true
         default: 'B1'
+      resource-group-name:
+        description: 'Resource Group Name'
+        required: true
+        default: 'rg-vectorsearch-ai-assistant'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v3
+         ref:${{ github.event.inputs.appGetRepositoryBranch }}
+      
       - name: Set up Azure CLI
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Set up a GitHub secret for Azure credentials
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'  # Set up a GitHub secret for Azure credentials
+
+      - name: Create Resource Group
+      - run: |
+            az group create -l westus -n ${{ github.event.inputs.appGetRepositoryBranch }}
 
       - name: Deploy Bicep Template
         run: |
           az deployment group create \
             --resource-group rg-vectorsearch-ai-assistant \
             --template-file infra/azuredeploy.bicep 
+            --parameters \
+              mongoDbUserName=${{ github.event.inputs.mongoDbUserName }} \
+              mongoDbPassword=${{ secrets.MONGO_DB_PASSWORD }}

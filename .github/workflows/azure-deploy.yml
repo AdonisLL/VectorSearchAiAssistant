@@ -1,30 +1,29 @@
-name: Deploy Bicep Template
+name: Deploy
 # Deploy Vector Search & AI Assistant for Azure Cosmos DB for MongoDB vCore
 on:
-  
   workflow_dispatch:
     inputs:
       # Change this value
       appGetRepositoryBranch:
-        description: 'Repository Branch name to deploy bicep'
+        description: "Repository Branch name to deploy bicep"
         required: true
-        default: 'mongovcorev2'
+        default: "mongovcorev2"
       mongoDbUserName:
-        description: 'Username for the MongoDB Database No dashes'
+        description: "Username for the MongoDB Database No dashes"
         required: true
-        default: 'mongoDbAdmin'
+        default: "mongoDbAdmin"
       openAiSku:
-        description: 'Azure Open Ai Sku'
+        description: "Azure Open Ai Sku"
         required: true
-        default: 'S0'
+        default: "S0"
       appServiceSku:
-        description: 'Azure App Service Sku'
+        description: "Azure App Service Sku"
         required: true
-        default: 'B1'
+        default: "B1"
       resource-group-name:
-        description: 'Resource Group Name'
+        description: "Resource Group Name"
         required: true
-        default: 'rg-vectorsearch-ai-assistant'
+        default: "rg-vectorsearch-ai-assistant"
 
 jobs:
   deploy:
@@ -32,16 +31,14 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-         ref:${{ github.event.inputs.appGetRepositoryBranch }}
-      
+
       - name: Set up Azure CLI
         uses: azure/login@v1
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'  # Set up a GitHub secret for Azure credentials
+          creds: ${{ secrets.AZURE_CREDENTIALS }} # Set up a GitHub secret for Azure credentials
 
-      - name: Create Resource Group
       - run: |
-            az group create -l westus -n ${{ github.event.inputs.appGetRepositoryBranch }}
+          az group create -l westus -n ${{ github.event.inputs.appGetRepositoryBranch }}
 
       - name: Deploy Bicep Template
         run: |

@@ -31,8 +31,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.inputs.appGetRepositoryBranch }}
+        # with:
+        #   ref: ${{ github.event.inputs.appGetRepositoryBranch }}
 
       - name: Set up Azure CLI
         uses: azure/login@v1

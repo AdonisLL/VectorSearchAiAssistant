@@ -58,6 +58,6 @@ jobs:
             resourceGroupName: ${{ github.event.inputs.resource-group-name }}
             template: ./infra/azuredeploy.bicep
             parameters: 
-              mongoDbUserName:"${{ github.event.inputs.mongoDbUserName }}"
-              mongoDbPassword:"${{ secrets.MONGO_DB_PASSWORD }}"
+              mongoDbUserName=${{ github.event.inputs.mongoDbUserName }} 
+              mongoDbPassword=${{ secrets.MONGO_DB_PASSWORD }}
             failOnStdErr: false

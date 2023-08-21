@@ -1,0 +1,40 @@
+name: Deploy Bicep Template
+on:
+  
+  workflow_dispatch:
+    inputs:
+      # Change this value
+      appGetRepositoryBranch:
+        description: 'Repository Branch name to deploy bicep'
+        required: true
+        default: 'mongovcorev2'
+      mongoDbUserName:
+        description: 'Username for the MongoDB Database No dashes'
+        required: true
+        default: 'mongoDbAdmin'
+      openAiSku:
+        description: 'Azure Open Ai Sku'
+        required: true
+        default: 'S0'
+      appServiceSku:
+        description: 'Azure App Service Sku'
+        required: true
+        default: 'B1'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Set up a GitHub secret for Azure credentials
+
+      - name: Deploy Bicep Template
+        run: |
+          az deployment group create \
+            --resource-group rg-vectorsearch-ai-assistant \
+            --template-file infra/azuredeploy.bicep 

@@ -21,18 +21,28 @@ on:
         description: 'Azure App Service Sku'
         required: true
         default: 'B1'
+      resource-group-name:
+        description: 'Resource Group Name'
+        required: true
+        default: 'rg-vectorsearch-ai-assistant'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+         ref:${{ github.event.inputs.appGetRepositoryBranch }}
+      
 
       - name: Set up Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}  # Set up a GitHub secret for Azure credentials
+
+      - name: Create Resource Group
+      - run: |
+            az group create -l westus -n MyResourceGroup
 
       - name: Deploy Bicep Template
         run: |

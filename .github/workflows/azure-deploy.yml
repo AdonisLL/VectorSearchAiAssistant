@@ -51,4 +51,4 @@ jobs:
             --template-file infra/azuredeploy.bicep 
             --parameters \
               mongoDbUserName=${{ github.event.inputs.mongoDbUserName }} \
-              mongoDbPassword=${{ github.event.inputs.mongoDbPassword }}
+              mongoDbPassword=${{ secrets.mongoDbPassword }}

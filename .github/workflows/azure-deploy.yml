@@ -60,6 +60,6 @@ jobs:
             parameters: 
               mongoDbUserName=${{ github.event.inputs.mongoDbUserName }} 
               mongoDbPassword=${{ secrets.MONGO_DB_PASSWORD }}
-              appServiceSku=${{ secrets.MONGO_DB_PASSWORD }}
-              openAiSku=${{ secrets.MONGO_DB_PASSWORD }}
+              appServiceSku=${{ github.event.inputs.appServiceSku }}
+              openAiSku=${{ github.event.inputs.openAiSku }}
             failOnStdErr: false
